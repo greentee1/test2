@@ -58,3 +58,24 @@ class SAFEREncrypt:
 
             a = list(block)
             k = self.key_schedule(key)
+        
+        for i in range(8):
+            if i % 2 == 0:
+                a[i] = (a[i] + k[0][i]) & 0xFF
+            else:
+                a[i] = a[i] ^ k[0][i]
+
+        
+        for r in range(1, self.rounds + 1):
+            for i in range(8):
+                if i % 2 == 0:
+                    a[i] = self.exptab[a[i]]
+                else:
+                    a[i] = self.logtab[a[i]]
+
+            
+            a[0], a[1] = self.mat1(a[0], a[1])
+            a[2], a[3] = self.mat1(a[2], a[3])
+            a[4], a[5] = self.mat1(a[4], a[5])
+            a[6], a[7] = self.mat1(a[6], a[7])
+            a = [a[0], a[3], a[4], a[7], a[1], a[2], a[5], a[6]]
