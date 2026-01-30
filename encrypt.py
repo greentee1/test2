@@ -79,3 +79,15 @@ class SAFEREncrypt:
             a[4], a[5] = self.mat1(a[4], a[5])
             a[6], a[7] = self.mat1(a[6], a[7])
             a = [a[0], a[3], a[4], a[7], a[1], a[2], a[5], a[6]]
+
+            for i in range(8):
+                if i % 2 == 0:
+                    a[i] = (a[i] + k[2 * r - 1][i]) & 0xFF
+                else:
+                    a[i] = a[i] ^ k[2 * r - 1][i]
+
+            for i in range(8):
+                if i % 2 == 0:
+                    a[i] = a[i] ^ k[2 * r][i]
+                else:
+                    a[i] = (a[i] + k[2 * r][i]) & 0xFF
