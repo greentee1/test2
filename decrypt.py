@@ -120,3 +120,40 @@ class SAFERDecrypt:
         if 0 <= padding <= 7:
             return padded_bytes[:-padding]
         return padded_bytes.rstrip(b'\x00')
+    
+    def decrypt(self, ciphertext_hex, key):
+        # Проверка и подготовка ключа
+        if len(key) < 8:
+            key = key.ljust(8, 'A')
+        elif len(key) > 8:
+            key = key[:8]
+
+        # Проверка ASCII ключа
+        try:
+            key_bytes = key.encode('ascii')
+        except UnicodeEncodeError:
+            raise ValueError("Ключ должен содержать только английские буквы")
+
+        # Конвертация hex в байты
+        ciphertext = binascii.unhexlify(ciphertext_hex)
+
+        # Проверка длины
+        if len(ciphertext) % 8 != 0:
+            raise ValueError(f"Длина шифртекста должна быть кратна 8, получено {len(ciphertext)}")
+
+        # Дешифрование блоков
+        result = b''
+        for i in range(0, len(ciphertext), 8):
+            block = ciphertext[i:i + 8]
+            decrypted = self.decrypt_block(block, key_bytes)
+            result += decrypted
+
+        # Удаление дополнения
+        original = self.unpad_message(result)
+
+        # Декодирование
+        try:
+            return original.decode('ascii')
+        except UnicodeDecodeError:
+            # Если не ASCII, возвращаем hex
+            return binascii.hexlify(original).decode()
