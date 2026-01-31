@@ -98,3 +98,12 @@ class SAFEREncrypt:
             else:
                 a[i] = a[i] ^ k[2 * self.rounds][i]
         return bytes(a)
+    def pad_message(self, message_bytes):
+        if not message_bytes:
+            return bytes([0] * 8)
+
+        padding = 8 - (len(message_bytes) % 8)
+        if padding == 8:
+            padding = 0
+
+        return message_bytes + bytes([padding] * padding)
