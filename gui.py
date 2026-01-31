@@ -37,3 +37,21 @@ def encrypt():
 
     except Exception as e:
         messagebox.showerror("Encryption Error", str(e))
+
+def decrypt():
+    """Дешифрование текста"""
+    try:
+        # Получаем данные
+        ciphertext = text_entry.get("1.0", tk.END).strip()
+        key = key_entry.get().strip()
+
+        if not ciphertext or not key:
+            messagebox.showerror("Ошибка", "Введите шифртекст и ключ")
+            return
+        if len(key) != 8:
+            messagebox.showerror("Ошибка", "Введите ключ из 8 символов")
+            return
+
+        # Дешифруем
+        cipher = SAFERDecrypt()
+        decrypted = cipher.decrypt(ciphertext, key)
