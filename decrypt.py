@@ -53,3 +53,60 @@ class SAFERDecrypt:
             k = [self.rotate_left(x, 3) for x in k]
 
         return subkeys
+    
+    def decrypt_block(self, block, key):
+        """Дешифрование одного 8-байтного блока"""
+        if len(block) != 8:
+            raise ValueError(f"Блок должен быть 8 байт, получено {len(block)}")
+        if len(key) != 8:
+            raise ValueError(f"Ключ должен быть 8 байт, получено {len(key)}")
+
+        a = list(block)
+        k = self.key_schedule(key)
+
+        # Обратное финальное преобразование
+        for i in range(8):
+            if i % 2 == 0:
+                a[i] = (a[i] - k[2 * self.rounds][i]) & 0xFF
+            else:
+                a[i] = a[i] ^ k[2 * self.rounds][i]
+
+        # 8 раундов в обратном порядке
+        for r in range(self.rounds, 0, -1):
+            # Обратное смешивание с ключами
+            for i in range(8):
+                if i % 2 == 0:
+                    a[i] = a[i] ^ k[2 * r][i]
+                else:
+                    a[i] = (a[i] - k[2 * r][i]) & 0xFF
+
+            for i in range(8):
+                if i % 2 == 0:
+                    a[i] = (a[i] - k[2 * r - 1][i]) & 0xFF
+                else:
+                    a[i] = a[i] ^ k[2 * r - 1][i]
+
+            # Обратная перестановка
+            a = [a[0], a[4], a[5], a[1], a[2], a[6], a[7], a[3]]
+
+            # Обратный PHT
+            a[0], a[1] = self.mat1_inv(a[0], a[1])
+            a[2], a[3] = self.mat1_inv(a[2], a[3])
+            a[4], a[5] = self.mat1_inv(a[4], a[5])
+            a[6], a[7] = self.mat1_inv(a[6], a[7])
+
+            # Обратный S-box
+            for i in range(8):
+                if i % 2 == 0:
+                    a[i] = self.logtab[a[i]]
+                else:
+                    a[i] = self.exptab[a[i]]
+
+        # Обратное начальное преобразование
+        for i in range(8):
+            if i % 2 == 0:
+                a[i] = (a[i] - k[0][i]) & 0xFF
+            else:
+                a[i] = a[i] ^ k[0][i]
+
+        return bytes(a)
