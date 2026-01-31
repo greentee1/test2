@@ -129,3 +129,20 @@ copy_btn = tk.Button(button_frame, text="Копировать результат
                      width=12)
 copy_btn.pack(side=tk.LEFT, padx=5)
 
+# Результат
+tk.Label(root, text="Результат:").pack()
+result_text = scrolledtext.ScrolledText(root, height=10, width=70,
+                                        state='disabled')
+result_text.pack(padx=20, pady=(0, 10))
+
+# Информация
+info_label = tk.Label(root,
+                      text="Примечание: Поддерживает только английские символы с кодировкой ASCII",
+                      font=("Arial", 9), fg="gray")
+info_label.pack(pady=5)
+
+# Вставить пример
+clear()
+
+# Запуск
+root.mainloop()
