@@ -112,3 +112,12 @@ class SAFEREncrypt:
             key = key.ljust(8, 'A')
         elif len(key) > 8:
             key = key[:8]
+        
+        try:
+            key_bytes = key.encode('ascii')
+            text_bytes = plaintext.encode('ascii')
+        except UnicodeEncodeError:
+            raise ValueError("Только английские буквы и символы ASCII")
+
+    
+        padded = self.pad_message(text_bytes)
