@@ -99,3 +99,13 @@ root.geometry("600x500")
 title_label = tk.Label(root, text="SAFER SK-64",
                        font=("Arial", 14, "bold"))
 title_label.pack(pady=10)
+
+# Поле для текста
+tk.Label(root, text="Введите сообщение на английском:").pack()
+text_entry = scrolledtext.ScrolledText(root, height=5, width=70)
+text_entry.pack(padx=20, pady=(0, 10))
+
+# Поле для ключа
+tk.Label(root, text="Введите ключ (8 английских символов):").pack()
+key_entry = tk.Entry(root, width=50)
+key_entry.pack(pady=(0, 10))
