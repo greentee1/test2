@@ -26,3 +26,8 @@ class SAFERDecrypt:
 
     def rotate_left(self, b, n):
         return ((b << n) | (b >> (8 - n))) & 0xFF
+    
+    def mat1_inv(self, a, b):
+        x = (a - b) & 0xFF
+        y = (b - x) & 0xFF
+        return x, y
