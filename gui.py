@@ -90,3 +90,12 @@ def copy_result():
     if result:
         root.clipboard_clear()
         root.clipboard_append(result)
+
+root = tk.Tk()
+root.title("SAFER SK-64 Encryption")
+root.geometry("600x500")
+
+
+title_label = tk.Label(root, text="SAFER SK-64",
+                       font=("Arial", 14, "bold"))
+title_label.pack(pady=10)
