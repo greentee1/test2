@@ -121,3 +121,11 @@ class SAFEREncrypt:
 
     
         padded = self.pad_message(text_bytes)
+
+        result = b''
+        for i in range(0, len(padded), 8):
+            block = padded[i:i + 8]
+            encrypted = self.encrypt_block(block, key_bytes)
+            result += encrypted
+
+        return binascii.hexlify(result).decode()
