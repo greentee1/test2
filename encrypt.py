@@ -107,3 +107,8 @@ class SAFEREncrypt:
             padding = 0
 
         return message_bytes + bytes([padding] * padding)
+    def encrypt(self, plaintext, key):
+        if len(key) < 8:
+            key = key.ljust(8, 'A')
+        elif len(key) > 8:
+            key = key[:8]
