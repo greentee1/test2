@@ -110,3 +110,13 @@ class SAFERDecrypt:
                 a[i] = a[i] ^ k[0][i]
 
         return bytes(a)
+
+    def unpad_message(self, padded_bytes):
+    
+        if not padded_bytes:
+            return b''
+
+        padding = padded_bytes[-1]
+        if 0 <= padding <= 7:
+            return padded_bytes[:-padding]
+        return padded_bytes.rstrip(b'\x00')
