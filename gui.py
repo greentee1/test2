@@ -109,3 +109,23 @@ text_entry.pack(padx=20, pady=(0, 10))
 tk.Label(root, text="Введите ключ (8 английских символов):").pack()
 key_entry = tk.Entry(root, width=50)
 key_entry.pack(pady=(0, 10))
+
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
+
+encrypt_btn = tk.Button(button_frame, text="Шифровать", command=encrypt,
+                        bg="lightblue", width=12)
+encrypt_btn.pack(side=tk.LEFT, padx=5)
+
+decrypt_btn = tk.Button(button_frame, text="Дешифровать", command=decrypt,
+                        bg="lightgreen", width=12)
+decrypt_btn.pack(side=tk.LEFT, padx=5)
+
+clear_btn = tk.Button(button_frame, text="Отчистить", command=clear,
+                      width=12)
+clear_btn.pack(side=tk.LEFT, padx=5)
+
+copy_btn = tk.Button(button_frame, text="Копировать результат", command=copy_result,
+                     width=12)
+copy_btn.pack(side=tk.LEFT, padx=5)
+
