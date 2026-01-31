@@ -55,3 +55,19 @@ def decrypt():
         # Дешифруем
         cipher = SAFERDecrypt()
         decrypted = cipher.decrypt(ciphertext, key)
+
+        result_text.config(state='normal')
+        result_text.delete('1.0', tk.END)
+        result_text.insert('1.0', "Расшифровано:\n\n")
+        result_text.insert('end', f"Ключ: {key}\n")
+        result_text.insert('end', f"Шифр: {ciphertext[:50]}...\n\n")
+        result_text.insert('end', "Расшифрованный текст:\n")
+        result_text.insert('end', decrypted)
+        result_text.config(state='disabled')
+
+        # Копируем в поле ввода
+        text_entry.delete("1.0", tk.END)
+        text_entry.insert("1.0", decrypted)
+
+    except Exception as e:
+        messagebox.showerror("Decryption Error", str(e))
