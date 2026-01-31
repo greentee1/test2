@@ -31,3 +31,25 @@ class SAFERDecrypt:
         x = (a - b) & 0xFF
         y = (b - x) & 0xFF
         return x, y
+    
+    def key_schedule(self, key):
+        """Генерация 17 раундовых ключей"""
+        if len(key) != 8:
+            raise ValueError(f"Ключ должен быть 8 байт, получено {len(key)}")
+
+        k = list(key)
+        parity = 0
+        for b in k:
+            parity ^= b
+        k.append(parity)
+
+        subkeys = []
+        for r in range(2 * self.rounds + 1):
+            subkey = []
+            for j in range(8):
+                idx = (9 * r + j) % 256
+                subkey.append((k[j] + self.exptab[idx]) & 0xFF)
+            subkeys.append(subkey)
+            k = [self.rotate_left(x, 3) for x in k]
+
+        return subkeys
