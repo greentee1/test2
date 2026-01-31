@@ -83,3 +83,10 @@ def clear():
     # Вставить пример
     text_entry.insert("1.0", "Hello World! This is a test.")
     key_entry.insert(0, "secret12")
+
+def copy_result():
+    """Копирование результата в буфер"""
+    result = result_text.get("1.0", tk.END).strip()
+    if result:
+        root.clipboard_clear()
+        root.clipboard_append(result)
