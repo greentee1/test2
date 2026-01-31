@@ -71,3 +71,15 @@ def decrypt():
 
     except Exception as e:
         messagebox.showerror("Decryption Error", str(e))
+
+def clear():
+    """Очистка всех полей"""
+    text_entry.delete("1.0", tk.END)
+    key_entry.delete(0, tk.END)
+    result_text.config(state='normal')
+    result_text.delete('1.0', tk.END)
+    result_text.config(state='disabled')
+
+    # Вставить пример
+    text_entry.insert("1.0", "Hello World! This is a test.")
+    key_entry.insert(0, "secret12")
